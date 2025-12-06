@@ -14,7 +14,10 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log('🔐 Login attempt:', credentials?.email);
+        
         if (!credentials?.email || !credentials?.password) {
+          console.log('❌ Missing credentials');
           throw new Error("Geçersiz kimlik bilgileri");
         }
 
@@ -24,15 +27,24 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
+        console.log('👤 User found:', user ? 'YES' : 'NO');
+        
         if (!user || !user.password) {
+          console.log('❌ User not found or no password');
           throw new Error("Kullanıcı bulunamadı");
         }
 
+        console.log('🔑 Comparing passwords...');
+        console.log('Input:', credentials.password);
+        console.log('Hash:', user.password.substring(0, 20) + '...');
+        
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
 
+        console.log('✅ Password valid:', isPasswordValid);
+        
         if (!isPasswordValid) {
           throw new Error("Yanlış şifre");
         }
