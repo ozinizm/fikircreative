@@ -25,12 +25,21 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
+    console.log("📦 Equipment POST - Session:", session?.user);
+    
     if (!session?.user?.id) {
+      console.log("❌ Equipment POST - No session");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
+    console.log("📦 Equipment POST - Body:", body);
+    
     const { name, category, serialNumber, status, assignedTo } = body;
+
+    console.log("📦 Equipment POST - Creating with data:", {
+      name, category, serialNumber, status: status || "AVAILABLE", assignedTo, userId: session.user.id
+    });
 
     const equipment = await prisma.equipment.create({
       data: {
@@ -43,10 +52,15 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("✅ Equipment created:", equipment.id);
     return NextResponse.json(equipment);
   } catch (error) {
-    console.error("Error creating equipment:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("❌ Equipment POST Error:", error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
+    return NextResponse.json({ 
+      error: "Internal server error", 
+      details: error instanceof Error ? error.message : String(error) 
+    }, { status: 500 });
   }
 }
 
