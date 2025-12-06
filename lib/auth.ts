@@ -21,11 +21,21 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Geçersiz kimlik bilgileri");
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        console.log('🔍 About to query Prisma...');
+        console.log('📊 Prisma client exists:', !!prisma);
+        
+        let user;
+        try {
+          user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email,
+            },
+          });
+          console.log('✅ Prisma query completed');
+        } catch (error) {
+          console.log('❌ Prisma error:', error);
+          throw new Error("Database bağlantı hatası: " + (error as Error).message);
+        }
 
         console.log('👤 User found:', user ? 'YES' : 'NO');
         
