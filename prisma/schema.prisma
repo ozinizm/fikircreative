@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Kullanıcı Modeli
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  position      String?
+  role          String    @default("USER") // "ADMIN" or "USER"
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  tasks         Task[]
+  clients       Client[]
+  projects      Project[]
+  reports       Report[]
+  transactions  Transaction[]
+  equipment     Equipment[]
+  events        Event[]
+  notes         Note[]
+  notifications Notification[]
+}
+
+// Müşteri Modeli
+model Client {
+  id          String    @id @default(cuid())
+  name        String
+  contact     String
+  email       String
+  phone       String?
+  website     String?
+  address     String?
+  logo        String?
+  status      String    @default("ACTIVE") // "ACTIVE", "INACTIVE", "PENDING"
+  monthlyFee  Float?    // Aylık ücret
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects    Project[]
+  transactions Transaction[]
+  reports     Report[]
+}
+
+// Proje Modeli
+model Project {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String    @default("TODO") // "TODO", "IN_PROGRESS", "REVIEW", "COMPLETED"
+  priority    String    @default("MEDIUM") // "LOW", "MEDIUM", "HIGH"
+  deadline    DateTime?
+  budget      Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  clientId    String
+  userId      String
+  
+  // Relations
+  client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+}
+
+// Görev Modeli
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String    @default("TODO") // "TODO", "IN_PROGRESS", "REVIEW", "COMPLETED"
+  priority    String    @default("MEDIUM") // "LOW", "MEDIUM", "HIGH"
+  deadline    DateTime?
+  tags        String?   // JSON string
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  projectId   String?
+  userId      String
+  
+  // Relations
+  project     Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Rapor Modeli
+model Report {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  fileUrl     String
+  fileType    String
+  fileSize    Int
+  clientId    String?
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Finans İşlem Modeli
+model Transaction {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  amount      Float
+  type        String    // "INCOME" or "EXPENSE"
+  status      String    @default("PENDING") // "PENDING", "COMPLETED", "CANCELLED"
+  date        DateTime  @default(now())
+  clientId    String?
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Ekipman Modeli
+model Equipment {
+  id          String    @id @default(cuid())
+  name        String
+  category    String
+  serialNumber String   @unique
+  status      String    @default("AVAILABLE") // "AVAILABLE", "IN_USE", "MAINTENANCE"
+  assignedTo  String?
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Takvim Etkinliği Modeli
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  type        String    @default("EVENT") // "EVENT", "TASK", "MEETING", "REMINDER"
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  color       String?
+  allDay      Boolean   @default(false)
+  taskId      String?   // Görev bağlantısı
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Not Modeli
+model Note {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Bildirim Modeli
+model Notification {
+  id          String    @id @default(cuid())
+  title       String
+  message     String
+  type        String    @default("INFO") // "INFO", "SUCCESS", "WARNING", "ERROR"
+  read        Boolean   @default(false)
+  userId      String
+  createdAt   DateTime  @default(now())
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

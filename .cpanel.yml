@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/fikircre/panel.fikircreative.com
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp .env $DEPLOYPATH
+    - /bin/cp .next $DEPLOYPATH -R

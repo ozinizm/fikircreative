@@ -1,0 +1,285 @@
+═══════════════════════════════════════════════════════════════════
+  FikirCreative AgencyOS - cPanel Deployment Hızlı Başlangıç
+═══════════════════════════════════════════════════════════════════
+
+📋 ÖN HAZIRLIK (Lokal Bilgisayarınızda)
+═══════════════════════════════════════════════════════════════════
+
+1. Production Build Oluşturun:
+   npm run build
+
+2. Build'i Test Edin:
+   npm start
+   Tarayıcıda http://localhost:3000 açın ve test edin
+
+3. .env.production Dosyası Oluşturun:
+   - .env dosyasını kopyalayın
+   - Aşağıdaki değerleri düzenleyin:
+
+   NODE_ENV=production
+   DATABASE_URL="mysql://KULLANICI:SIFRE@localhost:3306/VERITABANI"
+   NEXTAUTH_URL="https://panel.fikircreative.com"
+   NEXTAUTH_SECRET="[yeni-guvenli-secret-buraya]"
+   PORT=3000
+
+   NOT: KULLANICI, SIFRE ve VERITABANI bilgilerini 
+        Adım 2'de MySQL oluşturduktan sonra dolduracaksınız!
+
+
+🔐 GÜVENLİ SECRET OLUŞTURMA
+═══════════════════════════════════════════════════════════════════
+
+Terminal'de şu komutu çalıştırın:
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+
+Çıkan sonucu NEXTAUTH_SECRET olarak kullanın.
+
+
+🎯 ADIM 1: cPanel'DE NODE.JS UYGULAMASI OLUŞTURUN
+═══════════════════════════════════════════════════════════════════
+
+1. cPanel'e giriş yapın
+2. "Setup Node.js App" bölümüne gidin
+3. "Create Application" butonuna tıklayın
+4. Aşağıdaki bilgileri girin:
+
+   Node.js version: 18.x veya üzeri (en yüksek versiyonu seçin)
+   Application mode: Production
+   Application root: /home/kullanici_adiniz/agencyos
+   Application URL: https://panel.fikircreative.com
+   Application startup file: server.js
+   
+   NOT: Application root'ta "kullanici_adiniz" yerine cPanel kullanıcı 
+        adınızı yazın (genellikle domain adının bir kısmıdır)
+
+
+🗄️ ADIM 2: MySQL VERİTABANI OLUŞTURUN
+═══════════════════════════════════════════════════════════════════
+2. Yeni Database Oluşturun:
+   Database name: agencyos
+   (Otomatik olarak başına kullanıcı adınız eklenir)
+   
+   ÖRNEK: Kullanıcı adınız "fikir123" ise:
+   Oluşacak database: fikir123_agencyos
+   
+   ⚠️ Oluşan tam database adını not edin!
+
+3. Yeni User Oluşturun:
+   Username: agency
+   Password: [güçlü bir şifre - generate edin]
+   
+   ÖRNEK: Kullanıcı adınız "fikir123" ise:
+   Oluşacak user: fikir123_agency
+   
+   ⚠️ Şifreyi mutlaka kaydedin! (password generator kullanın)
+   ⚠️ Oluşan tam user adını not edin!
+
+4. User'ı Database'e Ekleyin:
+   - "Add User to Database" bölümünde user ve database'i seçin
+   - ALL PRIVILEGES seçin
+   - "Make Changes" butonuna tıklayın
+   
+   ⚠️ ŞİMDİ .env.production DOSYASINI GÜNCELLEYIN:
+   
+   DATABASE_URL="mysql://fikir123_agency:SIFRENIZ@localhost:3306/fikir123_agencyos"
+   
+   (Yukarıdaki örnekteki fikir123'ü kendi kullanıcı adınızla,
+    SIFRENIZ'i 3. adımda oluşturduğunuz şifre ile değiştirin)
+   - "Add User to Database" bölümünde user ve database'i seçin
+   - ALL PRIVILEGES seçin
+   - "Make Changes" butonuna tıklayın
+
+
+📁 ADIM 3: DOSYALARI YÜKLEYIN
+═══════════════════════════════════════════════════════════════════
+
+FTP veya cPanel File Manager ile şu dosyaları yükleyin:
+
+ZORUNLU DOSYALAR:
+├── .next/                    (build çıktısı - ZORUNLU)
+├── public/                   (statik dosyalar)
+├── prisma/                   (database schema)
+├── app/                      (uygulama kodları)
+├── components/               (UI componentleri)
+├── lib/                      (utility fonksiyonları)
+├── node_modules/             (veya sunucuda npm install çalıştırın)
+├── package.json              (ZORUNLU)
+├── package-lock.json         (ZORUNLU)
+├── next.config.js            (ZORUNLU)
+├── middleware.ts             (güvenlik için ZORUNLU)
+├── .env.production           (üretim ayarları - ZORUNLU)
+└── prisma/schema.prisma      (database şeması - ZORUNLU)
+
+NOT: node_modules klasörünü yüklemek yerine sunucuda npm install 
+     çalıştırmak daha hızlıdır (Adım 4'e bakın)
+
+
+🔧 ADIM 4: SSH İLE KURULUM
+═══════════════════════════════════════════════════════════════════
+
+1. SSH ile sunucuya bağlanın:
+   ssh kullanici_adiniz@sizindomain.com
+
+2. Uygulama dizinine gidin:
+   cd ~/agencyos
+
+3. Dependencies yükleyin:
+   npm install
+
+4. Prisma'yı kurun:
+   npx prisma generate
+3. Environment Variables (Ortam Değişkenleri) ekleyin:
+   
+   Variable Name              | Value
+   ─────────────────────────────────────────────────────────────
+   NODE_ENV                   | production
+   NEXTAUTH_URL               | https://panel.fikircreative.com
+   NEXTAUTH_SECRET            | [generate ettiğiniz secret]
+   DATABASE_URL               | mysql://fikir123_agency:SIFRENIZ@localhost:3306/fikir123_agencyos
+   PORT                       | 3000
+   
+   ⚠️ DİKKAT:
+   - DATABASE_URL'deki "fikir123" yerine KENDI kullanıcı adınızı yazın
+   - "SIFRENIZ" yerine Adım 2'de oluşturduğunuz MySQL şifresini yazın
+   - NEXTAUTH_SECRET için terminal'de şu komutu çalıştırın:
+     node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+     Çıkan sonucu buraya yapıştırın
+
+▶️ ADIM 5: UYGULAMAYI BAŞLATIN
+═══════════════════════════════════════════════════════════════════
+
+1. cPanel > Setup Node.js App sayfasına dönün
+
+2. Uygulamanızı bulun ve tıklayın
+
+3. Environment Variables (Ortam Değişkenleri) ekleyin:
+   
+   Variable Name              | Value
+   ─────────────────────────────────────────────────────────────
+   NODE_ENV                   | production
+   NEXTAUTH_URL               | https://agencyos.sizindomain.com
+   NEXTAUTH_SECRET            | [generate ettiğiniz secret]
+   DATABASE_URL               | mysql://kullanici_agency:sifre@localhost:3306/kullanici_agencyos
+   PORT                       | 3000
+
+4. "Run NPM Install" butonuna tıklayın (eğer adım 4'te yapmadıysanız)
+
+5. "Restart" butonuna tıklayın
+
+6. "Open" butonuna tıklayarak siteyi test edin
+
+
+🔒 ADIM 6: SSL SERTİFİKASI KURUN
+═══════════════════════════════════════════════════════════════════
+
+1. cPanel > SSL/TLS bölümüne gidin
+
+2. "Manage SSL sites" seçeneğine tıklayın
+
+3. Let's Encrypt seçeneği varsa:
+   - Domain'inizi seçin
+   - "Install" butonuna tıklayın
+
+4. Force HTTPS Redirect:
+   - cPanel > Domains > Domains
+Tarayıcınızda şu adrese gidin:
+https://panel.fikircreative.comneğini aktif edin
+
+
+✅ ADIM 7: TEST EDIN
+═══════════════════════════════════════════════════════════════════
+
+Tarayıcınızda şu adrese gidin:
+https://agencyos.sizindomain.com
+
+Test Listesi:
+□ Site açılıyor mu?
+□ Login ekranı görünüyor mu?
+□ Admin kullanıcısı ile giriş yapabiliyor musunuz?
+  (admin@fikir.agency / Admin123!)
+□ Dashboard yükleniyor mu?
+□ Tüm menü öğeleri çalışıyor mu?
+  - Dashboard
+  - Müşteriler
+  - Projeler
+  - Finans
+  - Takvim
+  - Ekipman
+  - Raporlar
+  - Kullanıcılar (Admin için)
+  - Ayarlar
+□ Müşteri ekleyebiliyor musunuz?
+□ Görev oluşturabiliyor musunuz?
+□ Bildirimler çalışıyor mu?
+□ Tema değiştirme çalışıyor mu?
+
+
+🆘 SORUN GİDERME
+═══════════════════════════════════════════════════════════════════
+
+Problem: "502 Bad Gateway" hatası
+Çözüm:
+  1. cPanel > Setup Node.js App > Restart
+  2. Error logs kontrol edin
+  3. Node.js version 18+ olduğundan emin olun
+
+Problem: "Database connection error"
+Çözüm:
+  1. DATABASE_URL doğru mu kontrol edin
+  2. MySQL user yetkilerini kontrol edin
+  3. SSH ile: cd ~/agencyos && npx prisma db push
+
+Problem: "Session hatası" veya "Unauthorized"
+Çözüm:
+  1. NEXTAUTH_SECRET yeni generate edin
+  2. NEXTAUTH_URL https:// ile başlıyor mu kontrol edin
+  3. Environment variables cPanel'de doğru girildi mi kontrol edin
+
+Problem: Sayfalar 404 veriyor
+Çözüm:
+  1. .next klasörü yüklenmiş mi kontrol edin
+  2. npm run build tekrar çalıştırın
+  3. server.js dosyası var mı kontrol edin
+
+Problem: npm install çok yavaş
+Çözüm:
+  1. Lokal bilgisayardan node_modules'ü zip'leyip yükleyin
+  2. Veya: npm ci --only=production (daha hızlı)
+
+
+📋 DEPLOYMENT SONRASI YAPILACAKLAR
+═══════════════════════════════════════════════════════════════════
+
+□ Varsayılan admin şifresini değiştirin
+□ Yeni kullanıcılar ekleyin (Kullanıcılar menüsünden)
+□ Backup ayarları yapın (cPanel > Backup)
+□ UptimeRobot gibi monitoring servisi ekleyin
+□ Google Analytics ekleyin (opsiyonel)
+□ Email SMTP ayarlarını yapılandırın (opsiyonel)
+□ Domain'e özel email adresleri oluşturun
+
+
+🔄 GÜNCELLEME YAPARKEN
+═══════════════════════════════════════════════════════════════════
+
+1. Lokal'de değişiklikleri yapın
+2. npm run build
+3. Sadece değişen dosyaları FTP ile yükleyin:
+   - .next/ klasörünü yenileyin
+   - Değişen component/page dosyalarını yükleyin
+4. cPanel > Setup Node.js App > Restart
+
+
+📞 DESTEK
+═══════════════════════════════════════════════════════════════════
+
+Sorun yaşıyorsanız:
+1. cPanel hosting sağlayıcınızın destek ekibine başvurun
+2. Error logs'u kontrol edin: ~/agencyos/logs/
+3. Node.js version ve environment variables'ı kontrol edin
+
+
+═══════════════════════════════════════════════════════════════════
+Son Güncelleme: 6 Aralık 2025
+Versiyon: 1.0
+═══════════════════════════════════════════════════════════════════
