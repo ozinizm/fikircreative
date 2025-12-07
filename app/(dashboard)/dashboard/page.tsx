@@ -45,32 +45,41 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-500/20 border-t-violet-500"></div>
+          <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-xl animate-pulse"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Gösterge Paneli</h1>
-          <p className="text-gray-400 mt-1">Genel bakış ve güncel durum</p>
-        </div>
-        <div className="flex gap-3">
-          <button 
-            onClick={() => window.location.href = "/projeler"}
-            className="px-4 py-2 bg-[#252525] text-white rounded-lg hover:bg-[#2a2a2a] transition-all border border-[#2a2a2a]"
-          >
-            Yeni Görev
-          </button>
-          <button 
-            onClick={() => window.location.href = "/musteriler"}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all flex items-center gap-2"
-          >
-            <Plus size={18} />
-            Yeni Müşteri
-          </button>
+    <div className="space-y-6 p-6">
+      {/* Header with Gradient */}
+      <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-pink-500/10"></div>
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-violet-200 to-purple-200 bg-clip-text text-transparent">
+              Gösterge Paneli
+            </h1>
+            <p className="text-gray-400 mt-2 text-lg">Genel bakış ve güncel durum</p>
+          </div>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => window.location.href = "/projeler"}
+              className="px-6 py-3 glass-card hover:bg-white/10 text-white rounded-xl transition-all border border-white/20 backdrop-blur-xl font-medium"
+            >
+              Yeni Görev
+            </button>
+            <button 
+              onClick={() => window.location.href = "/musteriler"}
+              className="px-6 py-3 glass-button text-white rounded-xl transition-all flex items-center gap-2 font-medium shadow-lg"
+            >
+              <Plus size={20} />
+              Yeni Müşteri
+            </button>
+          </div>
         </div>
       </div>
 

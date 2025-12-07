@@ -72,32 +72,32 @@ export function CalendarWidget() {
             <button
               key={day}
               className={`
-                aspect-square flex items-center justify-center rounded-lg text-sm font-medium transition-all relative
+                aspect-square flex items-center justify-center rounded-xl text-sm font-semibold transition-all relative group
                 ${isToday 
-                  ? "bg-red-600 text-white" 
-                  : "text-gray-300 hover:bg-[#252525]"
+                  ? "glass-button text-white shadow-glow" 
+                  : "glass-card hover:bg-white/10 text-gray-300"
                 }
               `}
             >
               {day}
               {hasEvent && !isToday && (
-                <span className="absolute bottom-1 w-1 h-1 bg-red-600 rounded-full" />
+                <span className="absolute bottom-1 w-1.5 h-1.5 bg-violet-500 rounded-full group-hover:scale-125 transition-transform" />
               )}
             </button>
           );
         })}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-[#2a2a2a]">
-        <p className="text-sm text-gray-400 mb-2">Yaklaşan Etkinlikler</p>
+      <div className="mt-6 pt-4 border-t border-white/10">
+        <p className="text-sm text-violet-400 mb-3 font-semibold">Yaklaşan Etkinlikler</p>
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm">
-            <div className="w-2 h-2 bg-red-600 rounded-full" />
-            <span className="text-white">Müşteri Toplantısı</span>
+          <div className="flex items-center gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
+            <div className="w-2 h-2 bg-violet-500 rounded-full shadow-glow" />
+            <span className="text-white font-medium">Müşteri Toplantısı</span>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <div className="w-2 h-2 bg-blue-600 rounded-full" />
-            <span className="text-white">Proje Teslimi</span>
+          <div className="flex items-center gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
+            <div className="w-2 h-2 bg-blue-500 rounded-full shadow-glow" />
+            <span className="text-white font-medium">Proje Teslimi</span>
           </div>
         </div>
       </div>

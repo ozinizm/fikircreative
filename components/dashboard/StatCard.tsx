@@ -11,18 +11,32 @@ interface StatCardProps {
 
 export function StatCard({ title, value, change, isPositive, icon: Icon }: StatCardProps) {
   return (
-    <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-6 hover:border-[#3a3a3a] transition-all">
-      <div className="flex items-start justify-between mb-4">
-        <div className="p-3 bg-[#252525] rounded-lg">
-          <Icon size={24} className="text-red-600" />
+    <div className="glass-card glass-hover rounded-2xl p-6 group relative overflow-hidden">
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-4">
+          <div className="p-3 bg-gradient-to-br from-violet-500/20 to-purple-500/20 rounded-xl backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
+            <Icon size={24} className="text-violet-400" />
+          </div>
+          <div className={`flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${
+            isPositive 
+              ? "bg-green-500/20 text-green-400 border border-green-500/30" 
+              : "bg-red-500/20 text-red-400 border border-red-500/30"
+          }`}>
+            {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+            {change}
+          </div>
         </div>
-        <div className={`flex items-center gap-1 text-sm font-medium ${isPositive ? "text-green-500" : "text-red-500"}`}>
-          {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-          {change}
-        </div>
+        <h3 className="text-gray-400 text-sm mb-2 font-medium">{title}</h3>
+        <p className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          {value}
+        </p>
       </div>
-      <h3 className="text-gray-400 text-sm mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-white">{value}</p>
+      
+      {/* Animated border glow */}
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/50 to-purple-500/50 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
     </div>
   );
 }
