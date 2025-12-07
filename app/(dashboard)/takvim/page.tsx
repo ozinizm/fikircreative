@@ -38,9 +38,15 @@ export default function TakvimPage() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("/api/events");
+      const response = await fetch("/api/events", {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      });
       if (response.ok) {
         const data = await response.json();
+        console.log("Events fetched:", data.length);
         setEvents(data);
       }
     } catch (error) {
@@ -52,12 +58,20 @@ export default function TakvimPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("=== EVENT SUBMIT START ===");
+    console.log("Event form data:", formData);
+    
     try {
       const response = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok) {
         setShowModal(false);
@@ -71,10 +85,16 @@ export default function TakvimPage() {
           color: "#ef4444",
           allDay: false,
         });
-        fetchEvents();
+        console.log("Fetching updated events list...");
+        await fetchEvents();
+        console.log("=== EVENT SUBMIT SUCCESS ===");
+      } else {
+        console.error("API error:", data);
+        alert(data.error || "Event eklenirken bir hata oluştu");
       }
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("=== EVENT SUBMIT ERROR ===", error);
+      alert("Bağlantı hatası");
     }
   };
 

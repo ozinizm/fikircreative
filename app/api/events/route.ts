@@ -30,27 +30,43 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    console.log("Event POST request body:", body);
+    
     const { title, description, type, startDate, endDate, location, color, allDay, taskId } = body;
+
+    // Validation
+    if (!title || !startDate) {
+      return NextResponse.json(
+        { error: "Başlık ve başlangıç tarihi zorunludur" },
+        { status: 400 }
+      );
+    }
 
     const event = await prisma.event.create({
       data: {
         title,
-        description,
+        description: description || null,
         type: type || "EVENT",
         startDate: new Date(startDate),
         endDate: endDate ? new Date(endDate) : null,
-        location,
-        color,
+        location: location || null,
+        color: color || null,
         allDay: allDay || false,
-        taskId,
+        taskId: taskId || null,
         userId: session.user.id,
       },
     });
 
+    console.log("Event created:", event);
+
     return NextResponse.json(event);
   } catch (error) {
     console.error("Error creating event:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("Error details:", JSON.stringify(error, null, 2));
+    return NextResponse.json(
+      { error: "Internal server error: " + (error as Error).message },
+      { status: 500 }
+    );
   }
 }
 

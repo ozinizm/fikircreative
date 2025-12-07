@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { logActivity } from "@/lib/activity-logger";
 
 export async function GET() {
   try {
@@ -37,7 +38,16 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    console.log("Task POST request body:", body);
+    
     const { title, description, status, priority, deadline, tags, projectId } = body;
+
+    if (!title) {
+      return NextResponse.json(
+        { error: "Görev başlığı zorunludur" },
+        { status: 400 }
+      );
+    }
 
     const task = await prisma.task.create({
       data: {
@@ -52,10 +62,24 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("Task created:", task);
+
+    // Aktivite kaydı oluştur
+    await logActivity({
+      userId: session.user.id,
+      action: "CREATE",
+      entity: "TASK",
+      entityId: task.id,
+      details: `Yeni görev oluşturuldu: ${title}`,
+    });
+
     return NextResponse.json(task);
   } catch (error) {
     console.error("Error creating task:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error: " + (error as Error).message },
+      { status: 500 }
+    );
   }
 }
 

@@ -38,6 +38,8 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    console.log("Client POST request body:", body);
+    
     const { name, contact, email, phone, website, address, monthlyFee, status } = body;
 
     // Basic validation
@@ -69,9 +71,11 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("Client created:", client);
+
     // Aylık ücret varsa otomatik gelir kaydı oluştur
     if (monthlyFee && parseFloat(monthlyFee) > 0) {
-      await prisma.transaction.create({
+      const transaction = await prisma.transaction.create({
         data: {
           title: `${name} - Aylık Ücret`,
           type: "INCOME",
@@ -82,12 +86,25 @@ export async function POST(request: Request) {
           userId: session.user.id,
         },
       });
+      console.log("Transaction created:", transaction);
     }
+
+    // Aktivite kaydı oluştur
+    await logActivity({
+      userId: session.user.id,
+      action: "CREATE",
+      entity: "CLIENT",
+      entityId: client.id,
+      details: `Yeni müşteri eklendi: ${name}`,
+    });
 
     return NextResponse.json(client);
   } catch (error) {
     console.error("Error creating client:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error: " + (error as Error).message }, 
+      { status: 500 }
+    );
   }
 }
 

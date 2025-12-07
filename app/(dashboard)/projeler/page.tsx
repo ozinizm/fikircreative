@@ -65,6 +65,9 @@ export default function ProjelerPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("Görev formu gönderiliyor:", formData);
+    
     try {
       const response = await fetch("/api/tasks", {
         method: "POST",
@@ -72,7 +75,12 @@ export default function ProjelerPage() {
         body: JSON.stringify(formData),
       });
 
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
+
       if (response.ok) {
+        showToast("Görev başarıyla eklendi!", "success");
         setShowModal(false);
         setFormData({
           title: "",
@@ -81,10 +89,13 @@ export default function ProjelerPage() {
           priority: "MEDIUM",
           deadline: "",
         });
-        fetchTasks();
+        await fetchTasks();
+      } else {
+        showToast(data.error || "Görev eklenirken hata oluştu", "error");
       }
     } catch (error) {
       console.error("Error creating task:", error);
+      showToast("Bağlantı hatası", "error");
     }
   };
 

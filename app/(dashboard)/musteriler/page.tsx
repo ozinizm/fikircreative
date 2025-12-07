@@ -40,9 +40,15 @@ export default function MusterilerPage() {
 
   const fetchClients = async () => {
     try {
-      const response = await fetch("/api/clients");
+      const response = await fetch("/api/clients", {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      });
       if (response.ok) {
         const data = await response.json();
+        console.log("Clients fetched:", data.length);
         setClients(data);
       }
     } catch (error) {
@@ -53,12 +59,20 @@ export default function MusterilerPage() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("=== FORM SUBMIT START ===");
+    console.log("Form data:", formData);
+    
     try {
       const response = await fetch("/api/clients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok) {
         showToast("Müşteri başarıyla eklendi!", "success");
@@ -73,12 +87,15 @@ export default function MusterilerPage() {
           monthlyFee: "",
           status: "ACTIVE"
         });
-        fetchClients();
+        console.log("Fetching updated clients list...");
+        await fetchClients();
+        console.log("=== FORM SUBMIT SUCCESS ===");
       } else {
-        showToast("Müşteri eklenirken bir hata oluştu", "error");
+        console.error("API error:", data);
+        showToast(data.error || "Müşteri eklenirken bir hata oluştu", "error");
       }
     } catch (error) {
-      console.error("Error creating client:", error);
+      console.error("=== FORM SUBMIT ERROR ===", error);
       showToast("Bağlantı hatası", "error");
     }
   };
@@ -99,6 +116,7 @@ export default function MusterilerPage() {
 
   return (
     <div className="space-y-6">
+      {ToastComponent}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Müşteriler</h1>

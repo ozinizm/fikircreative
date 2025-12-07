@@ -28,15 +28,16 @@ interface ActivityLogData {
   metadata?: Record<string, any>;
 }
 
-export async function logActivity({
-  userId,
-  action,
-  entity,
-  entityId,
-  details,
-  metadata,
-}: ActivityLogData) {
+export async function logActivity(data: ActivityLogData) {
+  const { userId, action, entity, entityId, details, metadata } = data;
+  
   try {
+    // Validate required fields
+    if (!userId || !action || !entity) {
+      console.error('[ACTIVITY] Missing required fields:', { userId, action, entity });
+      return;
+    }
+
     // Store in database (future: add ActivityLog model to schema)
     console.log(`[ACTIVITY] ${action} ${entity}`, {
       userId,
