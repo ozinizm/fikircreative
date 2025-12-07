@@ -1,15 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
 
 const daysOfWeek = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
 const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
+interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  type: string;
+  startDate: string;
+  endDate?: string;
+  color?: string;
+}
+
 export function CalendarWidget() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
   
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch("/api/events");
+      if (response.ok) {
+        const data = await response.json();
+        setEvents(data);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Generate calendar days
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -33,7 +64,29 @@ export function CalendarWidget() {
     new Date().getMonth() === month && 
     new Date().getFullYear() === year;
 
-  const eventDays = [7, 14, 21, 28]; // Days with events
+  // Belirli bir gün için eventleri getir
+  const getEventsForDay = (day: number) => {
+    return events.filter(event => {
+      const eventDate = new Date(event.startDate);
+      return eventDate.getDate() === day && 
+             eventDate.getMonth() === month && 
+             eventDate.getFullYear() === year;
+    });
+  };
+
+  // Yaklaşan eventleri getir (sonraki 5 gün)
+  const getUpcomingEvents = () => {
+    const now = new Date();
+    const fiveDaysLater = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000);
+    
+    return events
+      .filter(event => {
+        const eventDate = new Date(event.startDate);
+        return eventDate >= now && eventDate <= fiveDaysLater;
+      })
+      .slice(0, 3)
+      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  };
 
   const handlePrevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -48,6 +101,18 @@ export function CalendarWidget() {
   const handleDayClick = (day: number) => {
     setSelectedDay(day);
   };
+
+  const upcomingEvents = getUpcomingEvents();
+
+  if (loading) {
+    return (
+      <div className="glass-card rounded-2xl p-6">
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-red-400" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card rounded-2xl p-6">
@@ -93,44 +158,78 @@ export function CalendarWidget() {
           }
 
           const isToday = isCurrentMonth && day === today;
-          const hasEvent = eventDays.includes(day);
+          const dayEvents = getEventsForDay(day);
+          const hasEvent = dayEvents.length > 0;
           const isSelected = selectedDay === day;
+          const isHovered = hoveredDay === day;
 
           return (
-            <button
-              key={day}
-              onClick={() => handleDayClick(day)}
-              className={`
-                aspect-square flex items-center justify-center rounded-xl text-sm font-semibold transition-all relative group
-                ${isToday 
-                  ? "glass-button text-white shadow-glow" 
-                  : isSelected
-                  ? "bg-red-500/20 border border-red-500/50 text-white"
-                  : "glass-card hover:bg-white/10 text-gray-300"
-                }
-              `}
-            >
-              {day}
-              {hasEvent && !isToday && (
-                <span className="absolute bottom-1 w-1.5 h-1.5 bg-red-500 rounded-full group-hover:scale-125 transition-transform" />
+            <div key={day} className="relative group">
+              <button
+                onClick={() => handleDayClick(day)}
+                onMouseEnter={() => setHoveredDay(day)}
+                onMouseLeave={() => setHoveredDay(null)}
+                className={`
+                  w-full aspect-square flex items-center justify-center rounded-xl text-sm font-semibold transition-all relative
+                  ${isToday 
+                    ? "glass-button text-white shadow-glow" 
+                    : isSelected
+                    ? "bg-red-500/20 border border-red-500/50 text-white"
+                    : "glass-card hover:bg-white/10 text-gray-300"
+                  }
+                `}
+              >
+                {day}
+                {hasEvent && !isToday && (
+                  <span className="absolute bottom-1 w-1.5 h-1.5 bg-red-500 rounded-full group-hover:scale-125 transition-transform" />
+                )}
+              </button>
+              
+              {/* Hover Tooltip */}
+              {isHovered && hasEvent && (
+                <div className="absolute z-50 top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 glass-card p-3 rounded-xl shadow-xl border border-white/20">
+                  <div className="space-y-2">
+                    {dayEvents.map(event => (
+                      <div key={event.id} className="text-xs">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${event.color ? `bg-${event.color}-500` : 'bg-red-500'}`} />
+                          <span className="font-semibold text-white">{event.title}</span>
+                        </div>
+                        {event.description && (
+                          <p className="text-gray-400 ml-4 mt-1">{event.description}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </button>
+            </div>
           );
         })}
       </div>
 
       <div className="mt-6 pt-4 border-t border-white/10 dark:border-white/10 light:border-gray-200">
         <p className="text-sm text-red-400 mb-3 font-semibold">Yaklaşan Etkinlikler</p>
-        <div className="space-y-2">
-          <div className="flex items-center gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
-            <div className="w-2 h-2 bg-red-500 rounded-full shadow-glow" />
-            <span className="text-white font-medium">Müşteri Toplantısı</span>
+        {upcomingEvents.length > 0 ? (
+          <div className="space-y-2">
+            {upcomingEvents.map(event => (
+              <div key={event.id} className="flex items-start gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
+                <div className={`w-2 h-2 mt-1 rounded-full shadow-glow ${event.color ? `bg-${event.color}-500` : 'bg-red-500'}`} />
+                <div className="flex-1">
+                  <span className="text-white font-medium block">{event.title}</span>
+                  {event.description && (
+                    <span className="text-gray-400 text-xs">{event.description}</span>
+                  )}
+                  <span className="text-gray-500 text-xs block mt-1">
+                    {new Date(event.startDate).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
-            <div className="w-2 h-2 bg-orange-500 rounded-full shadow-glow" />
-            <span className="text-white font-medium">Proje Teslimi</span>
-          </div>
-        </div>
+        ) : (
+          <p className="text-gray-500 text-sm">Yaklaşan etkinlik yok</p>
+        )}
       </div>
     </div>
   );
