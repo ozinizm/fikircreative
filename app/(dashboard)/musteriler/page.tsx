@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/Toast";
+import { useSession } from "next-auth/react";
 
 interface Client {
   id: string;
@@ -11,6 +12,7 @@ interface Client {
   contact: string;
   email: string;
   phone?: string;
+  monthlyFee?: number;
   status: string;
   _count: {
     projects: number;
@@ -18,6 +20,8 @@ interface Client {
 }
 
 export default function MusterilerPage() {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN";
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -172,6 +176,11 @@ export default function MusterilerPage() {
                     <span className="text-xs text-gray-500">
                       {client._count.projects} Proje
                     </span>
+                    {client.monthlyFee && (
+                      <span className="text-xs text-orange-400 font-medium ml-auto">
+                        {isAdmin ? `₺${client.monthlyFee.toLocaleString()}` : "₺***"}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

@@ -12,15 +12,13 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = session.user.id;
-
     // Tarih hesaplamaları
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
 
-    // Paralel sorgular
+    // Paralel sorgular - tüm şirket verileri
     const [
       clientCount,
       lastMonthClientCount,
@@ -32,41 +30,35 @@ export async function GET() {
       lastMonthTransactions,
       recentTasks
     ] = await Promise.all([
-      prisma.client.count({ where: { userId } }),
+      prisma.client.count(),
       prisma.client.count({ 
         where: { 
-          userId, 
           createdAt: { lte: endOfLastMonth } 
         } 
       }),
-      prisma.task.count({ where: { userId } }),
+      prisma.task.count(),
       prisma.task.count({ 
         where: { 
-          userId, 
           createdAt: { lte: endOfLastMonth } 
         } 
       }),
-      prisma.task.count({ where: { userId, status: "TODO" } }),
+      prisma.task.count({ where: { status: "TODO" } }),
       prisma.task.count({ 
         where: { 
-          userId, 
           status: "TODO",
           createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } 
         } 
       }),
       prisma.transaction.findMany({
-        where: { userId },
         select: { amount: true, type: true, date: true }
       }),
       prisma.transaction.findMany({
         where: { 
-          userId,
           date: { gte: startOfLastMonth, lte: endOfLastMonth }
         },
         select: { amount: true, type: true }
       }),
       prisma.task.findMany({
-        where: { userId },
         take: 5,
         orderBy: { createdAt: "desc" },
         include: {

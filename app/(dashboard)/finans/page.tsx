@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Plus, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface Transaction {
   id: string;
@@ -17,6 +19,8 @@ interface Transaction {
 }
 
 export default function FinansPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -27,6 +31,14 @@ export default function FinansPage() {
     description: "",
     date: new Date().toISOString().split("T")[0],
   });
+
+  // Admin kontrolü
+  useEffect(() => {
+    if (status === "loading") return;
+    if (session?.user?.role !== "ADMIN") {
+      router.push("/dashboard");
+    }
+  }, [session, status, router]);
 
   useEffect(() => {
     fetchTransactions();

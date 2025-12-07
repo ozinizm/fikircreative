@@ -11,7 +11,6 @@ export async function GET() {
     }
 
     const events = await prisma.event.findMany({
-      where: { userId: session.user.id },
       orderBy: { startDate: "asc" },
     });
 

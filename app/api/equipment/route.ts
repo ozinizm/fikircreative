@@ -11,7 +11,6 @@ export async function GET() {
     }
 
     const equipment = await prisma.equipment.findMany({
-      where: { userId: session.user.id },
       orderBy: { createdAt: "desc" },
     });
 
