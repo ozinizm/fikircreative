@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -18,6 +19,7 @@ import {
   UserCog,
   Sun,
   Moon,
+  X,
 } from "lucide-react";
 
 const allMenuItems = [
@@ -32,7 +34,12 @@ const allMenuItems = [
   { icon: Settings, label: "Ayarlar", href: "/ayarlar" },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps = {}) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
@@ -44,10 +51,31 @@ export function Sidebar() {
   // Tema değiştiğinde logo değişsin
   const currentLogo = theme === "dark" ? APP_CONFIG.logo.sidebar : APP_CONFIG.logo.icon;
 
+  const handleLinkClick = () => {
+    if (onMobileClose) {
+      onMobileClose();
+    }
+  };
+
   return (
-    <aside className="w-64 glass-sidebar flex flex-col h-screen sticky top-0">
+    <>
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={onMobileClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside className={`
+        w-64 glass-sidebar flex flex-col h-screen sticky top-0 z-50
+        fixed lg:sticky
+        transition-transform duration-300 ease-in-out
+        ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
       {/* Logo */}
-      <div className="h-16 flex items-center px-6 border-b border-white/10 dark:border-white/10 light:border-gray-200">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 dark:border-white/10 light:border-gray-200">
         <div className="flex items-center gap-3">
           {currentLogo ? (
             <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
@@ -68,6 +96,14 @@ export function Sidebar() {
             {APP_CONFIG.name}
           </span>
         </div>
+        
+        {/* Mobile Close Button */}
+        <button
+          onClick={onMobileClose}
+          className="lg:hidden glass-card hover:bg-white/10 p-2 rounded-lg transition-all"
+        >
+          <X size={20} className="text-gray-300" />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -81,6 +117,7 @@ export function Sidebar() {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={handleLinkClick}
                   className={`
                     flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative overflow-hidden
                     ${
@@ -139,6 +176,7 @@ export function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }
 

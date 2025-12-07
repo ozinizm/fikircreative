@@ -54,36 +54,37 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 md:space-y-6 p-3 md:p-6">
       {/* Header with Gradient */}
-      <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
+      <div className="glass-card rounded-2xl p-4 md:p-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-pink-500/10"></div>
-        <div className="relative z-10 flex items-center justify-between">
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-red-200 to-orange-200 bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white via-red-200 to-orange-200 bg-clip-text text-transparent">
               Gösterge Paneli
             </h1>
-            <p className="text-gray-400 mt-2 text-lg">Genel bakış ve güncel durum</p>
+            <p className="text-gray-400 mt-1 md:mt-2 text-sm md:text-lg">Genel bakış ve güncel durum</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3 w-full md:w-auto">
             <button 
               onClick={() => window.location.href = "/projeler"}
-              className="px-6 py-3 glass-card hover:bg-white/10 text-white rounded-xl transition-all border border-white/20 backdrop-blur-xl font-medium"
+              className="flex-1 md:flex-none px-3 md:px-6 py-2 md:py-3 glass-card hover:bg-white/10 text-white rounded-xl transition-all border border-white/20 backdrop-blur-xl font-medium text-sm md:text-base"
             >
               Yeni Görev
             </button>
             <button 
               onClick={() => window.location.href = "/musteriler"}
-              className="px-6 py-3 glass-button text-white rounded-xl transition-all flex items-center gap-2 font-medium shadow-lg"
+              className="flex-1 md:flex-none px-3 md:px-6 py-2 md:py-3 glass-button text-white rounded-xl transition-all flex items-center justify-center gap-2 font-medium shadow-lg text-sm md:text-base"
             >
-              <Plus size={20} />
-              Yeni Müşteri
+              <Plus size={18} className="md:w-5 md:h-5" />
+              <span className="hidden sm:inline">Yeni Müşteri</span>
+              <span className="sm:hidden">Müşteri</span>
             </button>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         <StatCard
           title="Toplam Müşteri"
           value={stats?.clientCount.toString() || "0"}
@@ -114,14 +115,21 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="lg:col-span-2 order-2 lg:order-1">
           <TaskList tasks={stats?.recentTasks || []} />
         </div>
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6 order-1 lg:order-2">
           <CalendarWidget />
-          <FinanceChart />
+          <div className="hidden md:block">
+            <FinanceChart />
+          </div>
         </div>
+      </div>
+      
+      {/* FinanceChart - Mobilde altta tam genişlikte */}
+      <div className="block md:hidden">
+        <FinanceChart />
       </div>
     </div>
   );

@@ -106,52 +106,52 @@ export function CalendarWidget() {
 
   if (loading) {
     return (
-      <div className="glass-card rounded-2xl p-6">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin text-red-400" />
+      <div className="glass-card rounded-2xl p-4 md:p-6">
+        <div className="flex items-center justify-center h-48 md:h-64">
+          <Loader2 className="w-6 h-6 md:w-8 md:h-8 animate-spin text-red-400" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="glass-card rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="glass-card rounded-2xl p-4 md:p-6">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
         <div className="flex items-center gap-2">
-          <CalendarIcon size={20} className="text-red-400" />
-          <h2 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Takvim</h2>
+          <CalendarIcon size={18} className="md:w-5 md:h-5 text-red-400" />
+          <h2 className="text-lg md:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Takvim</h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
           <button 
             onClick={handlePrevMonth}
-            className="p-2 glass-card hover:bg-white/10 rounded-lg transition-all"
+            className="p-1.5 md:p-2 glass-card hover:bg-white/10 rounded-lg transition-all"
           >
-            <ChevronLeft size={18} className="text-gray-400" />
+            <ChevronLeft size={16} className="md:w-[18px] md:h-[18px] text-gray-400" />
           </button>
           <button 
             onClick={handleNextMonth}
-            className="p-2 glass-card hover:bg-white/10 rounded-lg transition-all"
+            className="p-1.5 md:p-2 glass-card hover:bg-white/10 rounded-lg transition-all"
           >
-            <ChevronRight size={18} className="text-gray-400" />
+            <ChevronRight size={16} className="md:w-[18px] md:h-[18px] text-gray-400" />
           </button>
         </div>
       </div>
 
-      <div className="mb-4">
-        <p className="text-2xl font-bold bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
+      <div className="mb-3 md:mb-4">
+        <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
           {monthNames[month]} {year}
         </p>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mb-2">
+      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-1 md:mb-2">
         {daysOfWeek.map((day) => (
-          <div key={day} className="text-center text-xs text-red-400/70 font-semibold">
+          <div key={day} className="text-center text-[10px] md:text-xs text-red-400/70 font-semibold">
             {day}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 md:gap-2">
         {calendarDays.map((day, index) => {
           if (day === null) {
             return <div key={`empty-${index}`} />;
@@ -170,7 +170,7 @@ export function CalendarWidget() {
                 onMouseEnter={() => setHoveredDay(day)}
                 onMouseLeave={() => setHoveredDay(null)}
                 className={`
-                  w-full aspect-square flex items-center justify-center rounded-xl text-sm font-semibold transition-all relative
+                  w-full aspect-square flex items-center justify-center rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-all relative
                   ${isToday 
                     ? "glass-button text-white shadow-glow" 
                     : isSelected
@@ -181,13 +181,13 @@ export function CalendarWidget() {
               >
                 {day}
                 {hasEvent && !isToday && (
-                  <span className="absolute bottom-1 w-1.5 h-1.5 bg-red-500 rounded-full group-hover:scale-125 transition-transform" />
+                  <span className="absolute bottom-0.5 md:bottom-1 w-1 h-1 md:w-1.5 md:h-1.5 bg-red-500 rounded-full group-hover:scale-125 transition-transform" />
                 )}
               </button>
               
-              {/* Hover Tooltip */}
+              {/* Hover Tooltip - Sadece desktop'ta göster */}
               {isHovered && hasEvent && (
-                <div className="absolute z-50 top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 glass-card p-3 rounded-xl shadow-xl border border-white/20">
+                <div className="hidden md:block absolute z-50 top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 glass-card p-3 rounded-xl shadow-xl border border-white/20">
                   <div className="space-y-2">
                     {dayEvents.map(event => (
                       <div key={event.id} className="text-xs">
@@ -208,19 +208,19 @@ export function CalendarWidget() {
         })}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-white/10 dark:border-white/10 light:border-gray-200">
-        <p className="text-sm text-red-400 mb-3 font-semibold">Yaklaşan Etkinlikler</p>
+      <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-white/10 dark:border-white/10 light:border-gray-200">
+        <p className="text-xs md:text-sm text-red-400 mb-2 md:mb-3 font-semibold">Yaklaşan Etkinlikler</p>
         {upcomingEvents.length > 0 ? (
           <div className="space-y-2">
             {upcomingEvents.map(event => (
-              <div key={event.id} className="flex items-start gap-3 text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
-                <div className={`w-2 h-2 mt-1 rounded-full shadow-glow ${event.color ? `bg-${event.color}-500` : 'bg-red-500'}`} />
-                <div className="flex-1">
-                  <span className="text-white font-medium block">{event.title}</span>
+              <div key={event.id} className="flex items-start gap-2 md:gap-3 text-xs md:text-sm glass-card p-2 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
+                <div className={`w-1.5 h-1.5 md:w-2 md:h-2 mt-1 rounded-full shadow-glow flex-shrink-0 ${event.color ? `bg-${event.color}-500` : 'bg-red-500'}`} />
+                <div className="flex-1 min-w-0">
+                  <span className="text-white font-medium block truncate">{event.title}</span>
                   {event.description && (
-                    <span className="text-gray-400 text-xs">{event.description}</span>
+                    <span className="text-gray-400 text-xs line-clamp-1">{event.description}</span>
                   )}
-                  <span className="text-gray-500 text-xs block mt-1">
+                  <span className="text-gray-500 text-[10px] md:text-xs block mt-0.5 md:mt-1">
                     {new Date(event.startDate).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -228,7 +228,7 @@ export function CalendarWidget() {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">Yaklaşan etkinlik yok</p>
+          <p className="text-gray-500 text-xs md:text-sm">Yaklaşan etkinlik yok</p>
         )}
       </div>
     </div>

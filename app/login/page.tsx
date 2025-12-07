@@ -45,7 +45,7 @@ export default function LoginPage() {
   const currentLogo = theme === "dark" ? APP_CONFIG.logo.login : APP_CONFIG.logo.icon;
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center p-3 md:p-4 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-orange-900/20 to-pink-900/20">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-500/10 via-transparent to-transparent"></div>
@@ -54,70 +54,70 @@ export default function LoginPage() {
 
       {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-red-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-64 md:h-64 bg-red-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-orange-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 right-1/3 w-32 h-32 md:w-48 md:h-48 bg-pink-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="relative z-10 w-full max-w-md">
         {/* Logo Section */}
-        <div className="text-center mb-8">
-          <div className="inline-flex flex-col items-center gap-4 mb-6">
+        <div className="text-center mb-6 md:mb-8">
+          <div className="inline-flex flex-col items-center gap-3 md:gap-4 mb-4 md:mb-6">
             <div className="relative group">
               {currentLogo ? (
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity animate-pulse"></div>
-                  <div className="relative glass-card p-6 rounded-2xl">
+                  <div className="relative glass-card p-4 md:p-6 rounded-2xl">
                     <Image 
                       src={currentLogo} 
                       alt={APP_CONFIG.name}
-                      width={120}
-                      height={120}
-                      className="object-contain"
+                      width={80}
+                      height={80}
+                      className="md:w-[120px] md:h-[120px] object-contain"
                     />
                   </div>
                 </div>
               ) : (
-                <div className="w-24 h-24 glass-button rounded-2xl flex items-center justify-center shadow-glow-lg">
-                  <span className="text-white font-bold text-3xl">{APP_CONFIG.logo.text}</span>
+                <div className="w-20 h-20 md:w-24 md:h-24 glass-button rounded-2xl flex items-center justify-center shadow-glow-lg">
+                  <span className="text-white font-bold text-2xl md:text-3xl">{APP_CONFIG.logo.text}</span>
                 </div>
               )}
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-red-200 to-orange-200 bg-clip-text text-transparent">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-red-200 to-orange-200 bg-clip-text text-transparent">
               {APP_CONFIG.name}
             </h1>
           </div>
-          <p className="text-gray-400 text-lg flex items-center justify-center gap-2">
-            <Sparkles size={18} className="text-red-400" />
+          <p className="text-gray-400 text-base md:text-lg flex items-center justify-center gap-2">
+            <Sparkles size={16} className="md:w-[18px] md:h-[18px] text-red-400" />
             {APP_CONFIG.description}
           </p>
         </div>
 
         {/* Login Form */}
-        <div className="glass-card rounded-2xl p-8 shadow-glass relative overflow-hidden group">
+        <div className="glass-card rounded-2xl p-5 md:p-8 shadow-glass relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
-          <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 relative z-10">
             {/* Error Message */}
             {error && (
-              <div className="glass-card bg-red-500/10 border-red-500/30 rounded-xl p-4 flex items-center gap-3 animate-slide-in">
-                <AlertCircle size={20} className="text-red-400 flex-shrink-0" />
-                <p className="text-red-400 text-sm font-medium">{error}</p>
+              <div className="glass-card bg-red-500/10 border-red-500/30 rounded-xl p-3 md:p-4 flex items-center gap-2 md:gap-3 animate-slide-in">
+                <AlertCircle size={18} className="md:w-5 md:h-5 text-red-400 flex-shrink-0" />
+                <p className="text-red-400 text-xs md:text-sm font-medium">{error}</p>
               </div>
             )}
 
             {/* Email */}
             <div>
-              <label className="block text-sm text-gray-400 mb-2 font-medium">
+              <label className="block text-xs md:text-sm text-gray-400 mb-2 font-medium">
                 E-posta
               </label>
               <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-400 transition-colors" size={18} />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-400 transition-colors" size={16} />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full glass-input text-white pl-10 pr-4 py-3 rounded-xl"
+                  className="w-full glass-input text-white pl-9 md:pl-10 pr-4 py-2.5 md:py-3 rounded-xl text-sm md:text-base"
                   placeholder="ornek@fikircreative.com"
                   required
                 />
@@ -126,16 +126,16 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm text-gray-400 mb-2 font-medium">
+              <label className="block text-xs md:text-sm text-gray-400 mb-2 font-medium">
                 Şifre
               </label>
               <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-400 transition-colors" size={18} />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-400 transition-colors" size={16} />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full glass-input text-white pl-10 pr-4 py-3 rounded-xl"
+                  className="w-full glass-input text-white pl-9 md:pl-10 pr-4 py-2.5 md:py-3 rounded-xl text-sm md:text-base"
                   placeholder="••••••••"
                   required
                 />
@@ -146,12 +146,12 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full glass-button text-white py-3 rounded-xl transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-glow relative overflow-hidden group"
+              className="w-full glass-button text-white py-2.5 md:py-3 rounded-xl transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-glow relative overflow-hidden group text-sm md:text-base"
             >
               <span className="relative z-10">
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <div className="w-3.5 h-3.5 md:w-4 md:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     Giriş yapılıyor...
                   </span>
                 ) : (
@@ -163,8 +163,8 @@ export default function LoginPage() {
           </form>
 
           {/* Info */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <p className="text-sm text-gray-400 text-center">
+          <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-white/10">
+            <p className="text-xs md:text-sm text-gray-400 text-center">
               Admin tarafından oluşturulan hesap bilgileriniz ile giriş yapabilirsiniz.
             </p>
           </div>
@@ -172,13 +172,13 @@ export default function LoginPage() {
 
         {/* Default Credentials (Development Only) */}
         {process.env.NODE_ENV === "development" && (
-          <div className="mt-4 glass-card bg-yellow-500/10 border-yellow-500/30 rounded-xl p-4 animate-slide-in">
-            <p className="text-yellow-400 text-xs font-semibold mb-2 flex items-center gap-2">
-              <Sparkles size={14} />
+          <div className="mt-3 md:mt-4 glass-card bg-yellow-500/10 border-yellow-500/30 rounded-xl p-3 md:p-4 animate-slide-in">
+            <p className="text-yellow-400 text-[10px] md:text-xs font-semibold mb-1.5 md:mb-2 flex items-center gap-2">
+              <Sparkles size={12} className="md:w-3.5 md:h-3.5" />
               Geliştirme Modunda Test Bilgileri:
             </p>
-            <p className="text-yellow-400 text-xs">Email: admin@fikircreative.com</p>
-            <p className="text-yellow-400 text-xs">Şifre: Admin123!</p>
+            <p className="text-yellow-400 text-[10px] md:text-xs">Email: admin@fikircreative.com</p>
+            <p className="text-yellow-400 text-[10px] md:text-xs">Şifre: Admin123!</p>
           </div>
         )}
       </div>
