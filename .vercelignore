@@ -1,0 +1,14 @@
+# Prisma Client cache
+node_modules/.prisma
+node_modules/@prisma/client
+
+# Development files
+.env
+.env.local
+dev.db
+dev.db-journal
+
+# Test files
+test-*.js
+*.test.ts
+*.test.tsx

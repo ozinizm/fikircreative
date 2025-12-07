@@ -12,11 +12,4 @@ if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 }
 
-// Handle disconnection on app termination
-if (process.env.NODE_ENV === 'production') {
-  process.on('beforeExit', async () => {
-    await prisma.$disconnect()
-  })
-}
-
 export default prisma
