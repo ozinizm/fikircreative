@@ -9,9 +9,13 @@ import { FinanceChart } from "@/components/dashboard/FinanceChart";
 
 interface Stats {
   clientCount: number;
+  clientChange: string;
   taskCount: number;
+  taskChange: string;
   pendingTaskCount: number;
+  pendingChange: string;
   revenue: number;
+  revenueChange: string;
   balance: number;
   recentTasks: any[];
 }
@@ -74,29 +78,29 @@ export default function DashboardPage() {
         <StatCard
           title="Toplam Müşteri"
           value={stats?.clientCount.toString() || "0"}
-          change="+12%"
-          isPositive={true}
+          change={stats?.clientChange ? `${Number(stats.clientChange) >= 0 ? '+' : ''}${stats.clientChange}%` : "0%"}
+          isPositive={Number(stats?.clientChange || 0) >= 0}
           icon={Users}
         />
         <StatCard
           title="Toplam Görevler"
           value={stats?.taskCount.toString() || "0"}
-          change="+8%"
-          isPositive={true}
+          change={stats?.taskChange ? `${Number(stats.taskChange) >= 0 ? '+' : ''}${stats.taskChange}%` : "0%"}
+          isPositive={Number(stats?.taskChange || 0) >= 0}
           icon={CheckCircle2}
         />
         <StatCard
           title="Bekleyen Görevler"
           value={stats?.pendingTaskCount.toString() || "0"}
-          change="-3%"
-          isPositive={false}
+          change={stats?.pendingChange ? `${Number(stats.pendingChange) >= 0 ? '+' : ''}${stats.pendingChange}%` : "0%"}
+          isPositive={Number(stats?.pendingChange || 0) >= 0}
           icon={Clock}
         />
         <StatCard
           title="Aylık Gelir"
           value={`₺${stats?.revenue.toLocaleString() || "0"}`}
-          change="+18%"
-          isPositive={true}
+          change={stats?.revenueChange ? `${Number(stats.revenueChange) >= 0 ? '+' : ''}${stats.revenueChange}%` : "0%"}
+          isPositive={Number(stats?.revenueChange || 0) >= 0}
           icon={DollarSign}
         />
       </div>
