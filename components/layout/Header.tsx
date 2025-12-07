@@ -16,7 +16,7 @@ export function Header() {
       {/* Search */}
       <div className="flex-1 max-w-xl">
         <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-violet-400 transition-colors" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-400 transition-colors" size={18} />
           <input
             type="text"
             placeholder="Ara..."
@@ -35,7 +35,7 @@ export function Header() {
           <div className="glass-card px-4 py-2 rounded-xl">
             <div className="text-right">
               <p className="text-sm text-white font-medium">{session.user.name}</p>
-              <p className="text-xs text-violet-400">{session.user.role === "ADMIN" ? "Admin" : "Kullanıcı"}</p>
+              <p className="text-xs text-red-400">{session.user.role === "ADMIN" ? "Admin" : "Kullanıcı"}</p>
             </div>
           </div>
         )}
@@ -61,3 +61,4 @@ export function Header() {
     </header>
   );
 }
+

@@ -15,20 +15,20 @@ const data = [
 export function FinanceChart() {
   return (
     <div className="glass-card rounded-2xl p-6 relative overflow-hidden group">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <TrendingUp size={20} className="text-violet-400" />
+              <TrendingUp size={20} className="text-red-400" />
               <h2 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Gelir ve Gider Akışı</h2>
             </div>
             <p className="text-sm text-gray-400">Son 6 ay</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full shadow-glow" />
+              <div className="w-3 h-3 bg-gradient-to-r from-red-500 to-orange-500 rounded-full shadow-glow" />
               <span className="text-sm text-gray-300 font-medium">Gelir</span>
             </div>
             <div className="flex items-center gap-2">
@@ -96,3 +96,4 @@ export function FinanceChart() {
     </div>
   );
 }
+

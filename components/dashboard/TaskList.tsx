@@ -26,7 +26,7 @@ export function TaskList({ tasks = [] }: TaskListProps) {
       <div className="glass-card rounded-2xl p-8">
         <h2 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-4">Son Görevler</h2>
         <div className="text-center py-8">
-          <Sparkles className="w-12 h-12 text-violet-400/50 mx-auto mb-3" />
+          <Sparkles className="w-12 h-12 text-red-400/50 mx-auto mb-3" />
           <p className="text-gray-400">Henüz görev bulunmuyor</p>
         </div>
       </div>
@@ -55,12 +55,12 @@ export function TaskList({ tasks = [] }: TaskListProps) {
                   } />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-semibold mb-1 group-hover:text-violet-300 transition-colors">{task.title}</h3>
+                  <h3 className="text-white font-semibold mb-1 group-hover:text-red-300 transition-colors">{task.title}</h3>
                   {task.description && (
                     <p className="text-sm text-gray-400">{task.description}</p>
                   )}
                   {task.project?.client?.name && (
-                    <p className="text-xs text-violet-400/70 mt-1 font-medium">{task.project.client.name}</p>
+                    <p className="text-xs text-red-400/70 mt-1 font-medium">{task.project.client.name}</p>
                   )}
                 </div>
               </div>
@@ -95,4 +95,5 @@ export function TaskList({ tasks = [] }: TaskListProps) {
     </div>
   );
 }
+
 

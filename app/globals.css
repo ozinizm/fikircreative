@@ -10,42 +10,42 @@
     --card-foreground: 0 0% 100%;
     --popover: 222 47% 15%;
     --popover-foreground: 0 0% 100%;
-    --primary: 262 83% 58%;
+    --primary: 0 84% 60%;
     --primary-foreground: 0 0% 100%;
     --secondary: 217 33% 17%;
     --secondary-foreground: 0 0% 100%;
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    --accent: 262 83% 58%;
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 100%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 262 83% 58%;
+    --ring: 0 84% 60%;
     --radius: 0.75rem;
   }
 
   .light {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 262 83% 58%;
+    --primary: 0 84% 60%;
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 262 83% 58%;
+    --ring: 0 84% 60%;
   }
 
   * {
@@ -81,32 +81,37 @@
   }
   
   .glass-button {
-    @apply bg-gradient-to-r from-violet-500/90 to-purple-500/90 backdrop-blur-sm 
-           hover:from-violet-600 hover:to-purple-600 
+    @apply bg-gradient-to-r from-red-500/90 to-orange-500/90 backdrop-blur-sm 
+           hover:from-red-600 hover:to-orange-600 
            transition-all duration-300 hover:shadow-glow;
   }
   
   .glass-input {
     @apply bg-white/5 backdrop-blur-xl border border-white/10 
-           focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20
+           focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20
            transition-all duration-300;
   }
 
   /* Light Mode Glass Effects */
   .light .glass-card {
-    @apply bg-white/80 border-black/10 shadow-lg;
+    @apply bg-white/90 border-gray-200 shadow-lg;
   }
   
   .light .glass-sidebar {
-    @apply bg-gradient-to-b from-white/90 to-white/80 border-r border-black/10;
+    @apply bg-gradient-to-b from-white/95 to-gray-50/95 border-r border-gray-200;
   }
   
   .light .glass-header {
-    @apply bg-white/80 border-b border-black/10;
+    @apply bg-white/95 border-b border-gray-200;
   }
   
   .light .glass-input {
-    @apply bg-white/50 border-black/10 focus:border-violet-500/50;
+    @apply bg-white border-gray-200 focus:border-red-500/50;
+  }
+
+  .light .glass-button {
+    @apply bg-gradient-to-r from-red-500 to-orange-500 
+           hover:from-red-600 hover:to-orange-600;
   }
 
   /* Gradient Backgrounds */
@@ -115,20 +120,20 @@
   }
   
   .bg-gradient-light {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #fef3f2 0%, #fee2e2 50%, #fecaca 100%);
   }
   
-  .bg-gradient-purple {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .bg-gradient-red {
+    background: linear-gradient(135deg, #dc2626 0%, #f97316 100%);
   }
 
   /* Glow Effects */
-  .glow-purple {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  .glow-red {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
   }
   
-  .glow-blue {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);
   }
   
   .glow-green {
@@ -151,7 +156,8 @@
 }
 
 .light ::-webkit-scrollbar-thumb {
-  @apply bg-black/10 hover:bg-black/20;
+  @apply bg-gray-300 hover:bg-gray-400;
+}
 }
 
 /* Smooth Transitions */

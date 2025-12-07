@@ -16,7 +16,7 @@ export function ClientCard({ client }: ClientCardProps) {
   return (
     <div className="glass-card glass-hover rounded-2xl p-6 cursor-pointer group relative overflow-hidden">
       {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-4">
@@ -24,7 +24,7 @@ export function ClientCard({ client }: ClientCardProps) {
             <span className="text-white font-bold text-xl">{client.logo}</span>
           </div>
           <div className="glass-card px-3 py-1 rounded-full">
-            <ChevronRight size={18} className="text-gray-400 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+            <ChevronRight size={18} className="text-gray-400 group-hover:text-red-400 group-hover:translate-x-1 transition-all" />
           </div>
         </div>
 
@@ -49,7 +49,8 @@ export function ClientCard({ client }: ClientCardProps) {
       </div>
       
       {/* Animated border glow */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/50 to-purple-500/50 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500/50 to-orange-500/50 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
     </div>
   );
 }
+

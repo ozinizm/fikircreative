@@ -13,12 +13,12 @@ export function StatCard({ title, value, change, isPositive, icon: Icon }: StatC
   return (
     <div className="glass-card glass-hover rounded-2xl p-6 group relative overflow-hidden">
       {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-4">
-          <div className="p-3 bg-gradient-to-br from-violet-500/20 to-purple-500/20 rounded-xl backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
-            <Icon size={24} className="text-violet-400" />
+          <div className="p-3 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-xl backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
+            <Icon size={24} className="text-red-400" />
           </div>
           <div className={`flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${
             isPositive 
@@ -36,7 +36,8 @@ export function StatCard({ title, value, change, isPositive, icon: Icon }: StatC
       </div>
       
       {/* Animated border glow */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/50 to-purple-500/50 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500/50 to-orange-500/50 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
     </div>
   );
 }
+

@@ -46,8 +46,8 @@ export default function DashboardPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-500/20 border-t-violet-500"></div>
-          <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-xl animate-pulse"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-500/20 border-t-red-500"></div>
+          <div className="absolute inset-0 rounded-full bg-red-500/20 blur-xl animate-pulse"></div>
         </div>
       </div>
     );
@@ -57,10 +57,10 @@ export default function DashboardPage() {
     <div className="space-y-6 p-6">
       {/* Header with Gradient */}
       <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-pink-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-pink-500/10"></div>
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-violet-200 to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-red-200 to-orange-200 bg-clip-text text-transparent">
               Gösterge Paneli
             </h1>
             <p className="text-gray-400 mt-2 text-lg">Genel bakış ve güncel durum</p>
@@ -126,3 +126,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

@@ -69,8 +69,8 @@ const config = {
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
         'glass-hover': '0 8px 32px 0 rgba(31, 38, 135, 0.5)',
-        'glow': '0 0 20px rgba(139, 92, 246, 0.3)',
-        'glow-lg': '0 0 40px rgba(139, 92, 246, 0.4)',
+        'glow': '0 0 20px rgba(220, 38, 38, 0.4)',
+        'glow-lg': '0 0 40px rgba(249, 115, 22, 0.5)',
       },
       keyframes: {
         "accordion-down": {

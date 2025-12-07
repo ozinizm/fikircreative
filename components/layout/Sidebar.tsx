@@ -47,22 +47,24 @@ export function Sidebar() {
   return (
     <aside className="w-64 glass-sidebar flex flex-col h-screen sticky top-0">
       {/* Logo */}
-      <div className="h-16 flex items-center px-6 border-b border-white/10">
+      <div className="h-16 flex items-center px-6 border-b border-white/10 dark:border-white/10 light:border-gray-200">
         <div className="flex items-center gap-3">
           {currentLogo ? (
-            <Image 
-              src={currentLogo} 
-              alt={APP_CONFIG.name}
-              width={32}
-              height={32}
-              className="object-contain"
-            />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
+              <Image 
+                src={currentLogo} 
+                alt={APP_CONFIG.name}
+                width={40}
+                height={40}
+                className="object-contain"
+              />
+            </div>
           ) : (
-            <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">{APP_CONFIG.logo.text}</span>
             </div>
           )}
-          <span className="font-bold text-lg bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          <span className="font-bold text-lg bg-gradient-to-r from-white to-gray-300 dark:from-white dark:to-gray-300 light:from-gray-900 light:to-gray-600 bg-clip-text text-transparent">
             {APP_CONFIG.name}
           </span>
         </div>
@@ -89,7 +91,7 @@ export function Sidebar() {
                   `}
                 >
                   {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-purple-500/20 animate-pulse" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-orange-500/20 animate-pulse" />
                   )}
                   <Icon size={20} className="relative z-10" />
                   <span className="text-sm font-medium relative z-10">{item.label}</span>
@@ -113,7 +115,7 @@ export function Sidebar() {
             </>
           ) : (
             <>
-              <Moon size={20} className="text-violet-400 group-hover:rotate-12 transition-transform duration-500" />
+              <Moon size={20} className="text-red-400 group-hover:rotate-12 transition-transform duration-500" />
               <span className="text-sm font-medium">Dark Mode</span>
             </>
           )}
@@ -124,7 +126,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-white/10">
         <div className="glass-card rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center ring-2 ring-violet-500/30 ring-offset-2 ring-offset-transparent">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center ring-2 ring-red-500/30 ring-offset-2 ring-offset-transparent">
               <span className="text-white font-semibold text-sm">
                 {session?.user?.name ? session.user.name.substring(0, 2).toUpperCase() : "??"}
               </span>
@@ -139,3 +141,4 @@ export function Sidebar() {
     </aside>
   );
 }
+
