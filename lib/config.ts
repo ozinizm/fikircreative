@@ -1,9 +1,9 @@
 // Şirket ve uygulama ayarları
 export const APP_CONFIG = {
   // Uygulama bilgileri
-  name: "Fikir Creative OS", // Buraya yeni isim gelecek
+  name: "Fikir Creative", // Uygulama ismi
   shortName: "FC", // Logo için kısaltma
-  description: "Şirket içi yönetim sistemi",
+  description: "Şirket İçi Yönetim Sistemi",
   
   // Şirket bilgileri
   company: {
@@ -12,12 +12,15 @@ export const APP_CONFIG = {
     email: "@fikircreative.com", // Email domain kısıtlaması
   },
   
-  // Logo ayarları
+  // Logo ayarları - dark theme için
   logo: {
-    // Logo URL buraya eklenecek
-    url: null, // "/logo.png" gibi
-    text: "FC", // Logo yerine gösterilecek text
-    showText: true, // Logo yerine text göster
+    sidebar: "/logos/logo-white.png", // Sidebar için beyaz logo
+    login: "/logos/logo-color.png",   // Login sayfası için renkli logo
+    icon: "/logos/logo-dark.png",     // Favicon için
+    text: "FC", // Fallback text
+    showText: false, // Logo dosyası kullan
+    width: 32,  // Sidebar logo genişliği
+    height: 32, // Sidebar logo yüksekliği
   },
   
   // Renk teması

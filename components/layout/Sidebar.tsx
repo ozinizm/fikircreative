@@ -42,21 +42,21 @@ export function Sidebar() {
     <aside className="w-64 bg-[#1a1a1a] border-r border-[#2a2a2a] flex flex-col">
       {/* Logo */}
       <div className="h-16 flex items-center px-6 border-b border-[#2a2a2a]">
-        <div className="flex items-center gap-2">
-          {APP_CONFIG.logo.url && !APP_CONFIG.logo.showText ? (
+        <div className="flex items-center gap-3">
+          {APP_CONFIG.logo.sidebar && !APP_CONFIG.logo.showText ? (
             <Image 
-              src={APP_CONFIG.logo.url} 
+              src={APP_CONFIG.logo.sidebar} 
               alt={APP_CONFIG.name}
-              width={32}
-              height={32}
-              className="rounded-lg"
+              width={APP_CONFIG.logo.width}
+              height={APP_CONFIG.logo.height}
+              className="object-contain"
             />
           ) : (
             <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">{APP_CONFIG.logo.text}</span>
             </div>
           )}
-          <span className="font-bold text-lg">{APP_CONFIG.name}</span>
+          <span className="font-bold text-lg text-white">{APP_CONFIG.name}</span>
         </div>
       </div>
 

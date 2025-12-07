@@ -45,23 +45,23 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-4">
-            {APP_CONFIG.logo.url && !APP_CONFIG.logo.showText ? (
+          <div className="inline-flex flex-col items-center gap-4 mb-6">
+            {APP_CONFIG.logo.login && !APP_CONFIG.logo.showText ? (
               <Image 
-                src={APP_CONFIG.logo.url} 
+                src={APP_CONFIG.logo.login} 
                 alt={APP_CONFIG.name}
-                width={48}
-                height={48}
-                className="rounded-xl"
+                width={120}
+                height={120}
+                className="object-contain"
               />
             ) : (
-              <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">{APP_CONFIG.logo.text}</span>
+              <div className="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-2xl">{APP_CONFIG.logo.text}</span>
               </div>
             )}
-            <h1 className="text-2xl font-bold text-white">{APP_CONFIG.name}</h1>
+            <h1 className="text-3xl font-bold text-white">{APP_CONFIG.name}</h1>
           </div>
-          <p className="text-gray-400">{APP_CONFIG.description}</p>
+          <p className="text-gray-400 text-lg">{APP_CONFIG.description}</p>
         </div>
 
         {/* Login Form */}
