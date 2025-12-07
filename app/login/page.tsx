@@ -4,6 +4,8 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, AlertCircle } from "lucide-react";
+import Image from "next/image";
+import { APP_CONFIG } from "@/lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -44,12 +46,22 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-xl">FC</span>
-            </div>
-            <h1 className="text-2xl font-bold text-white">Fikir AgencyOS</h1>
+            {APP_CONFIG.logo.url && !APP_CONFIG.logo.showText ? (
+              <Image 
+                src={APP_CONFIG.logo.url} 
+                alt={APP_CONFIG.name}
+                width={48}
+                height={48}
+                className="rounded-xl"
+              />
+            ) : (
+              <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-xl">{APP_CONFIG.logo.text}</span>
+              </div>
+            )}
+            <h1 className="text-2xl font-bold text-white">{APP_CONFIG.name}</h1>
           </div>
-          <p className="text-gray-400">Hesabınıza giriş yapın</p>
+          <p className="text-gray-400">{APP_CONFIG.description}</p>
         </div>
 
         {/* Login Form */}

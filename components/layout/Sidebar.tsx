@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { APP_CONFIG } from "@/lib/config";
 import {
   LayoutDashboard,
   CheckSquare,
@@ -41,10 +43,20 @@ export function Sidebar() {
       {/* Logo */}
       <div className="h-16 flex items-center px-6 border-b border-[#2a2a2a]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">FC</span>
-          </div>
-          <span className="font-bold text-lg">Fikir AgencyOS</span>
+          {APP_CONFIG.logo.url && !APP_CONFIG.logo.showText ? (
+            <Image 
+              src={APP_CONFIG.logo.url} 
+              alt={APP_CONFIG.name}
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
+          ) : (
+            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">{APP_CONFIG.logo.text}</span>
+            </div>
+          )}
+          <span className="font-bold text-lg">{APP_CONFIG.name}</span>
         </div>
       </div>
 

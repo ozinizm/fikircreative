@@ -38,7 +38,12 @@ export const transactionSchema = z.object({
 // User validation
 export const userSchema = z.object({
   name: z.string().min(2, "İsim en az 2 karakter olmalı"),
-  email: z.string().email("Geçerli bir email adresi girin"),
+  email: z
+    .string()
+    .email("Geçerli bir email adresi girin")
+    .refine((email) => email.endsWith("@fikircreative.com"), {
+      message: "Email adresi @fikircreative.com ile bitmelidir",
+    }),
   password: z.string().min(6, "Şifre en az 6 karakter olmalı").optional(),
   role: z.enum(["ADMIN", "USER"]),
   position: z.string().optional(),
