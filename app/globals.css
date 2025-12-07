@@ -158,7 +158,6 @@
 .light ::-webkit-scrollbar-thumb {
   @apply bg-gray-300 hover:bg-gray-400;
 }
-}
 
 /* Smooth Transitions */
 * {
