@@ -96,12 +96,3 @@ export function FinanceChart() {
     </div>
   );
 }
-
-              dot={{ fill: "#2563eb", r: 4 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-}
